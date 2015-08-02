@@ -16,7 +16,9 @@ module MyPrelude (
   Data.Tuple.swap,
   split,
   removeOrFail,
-  readCommaDecimal
+  readCommaDecimal,
+  Data.Ord.comparing,
+  Data.Ord.Down(..)
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
@@ -44,6 +46,7 @@ import qualified Control.Exception as E
 import qualified Data.Char 
 import qualified Data.Tuple
 import Data.Function as Exports
+import qualified Data.Ord
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
 instance Failable Maybe          where failErr _   = Nothing
@@ -114,7 +117,7 @@ split p str =
 
 filterMap = mapMaybe
 
-readCommaDecimal :: RealFloat a => String -> a
+readCommaDecimal :: (Read a, RealFloat a) => String -> a
 readCommaDecimal =
   read
   . map commaToDot
