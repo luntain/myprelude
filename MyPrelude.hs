@@ -4,7 +4,7 @@ module MyPrelude (
   Data.Traversable.mapM, Data.Traversable.forM,
   Data.Traversable.foldMapDefault,
   fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe,
-  E.throwIO,
+  E.throwIO, E.throw,
   printf,
   lookup,
   lookupIn,
@@ -15,7 +15,8 @@ module MyPrelude (
   null,
   Data.Tuple.swap,
   split,
-  removeOrFail
+  removeOrFail,
+  readCommaDecimal
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
@@ -112,3 +113,13 @@ split p str =
    (x, _:rest) -> x:split p rest
 
 filterMap = mapMaybe
+
+readCommaDecimal :: RealFloat a => String -> a
+readCommaDecimal =
+  read
+  . map commaToDot
+  . filter (/= ' ')
+  . filter (/= ' ') -- epromak's non-breaking space in thousands
+ where
+   commaToDot ',' = '.'
+   commaToDot x = x
