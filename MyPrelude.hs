@@ -11,7 +11,7 @@ module MyPrelude (
   tryRead,
   Failable(..), fail,
   whenM, unlessM, ifM,
-  List.nub, List.sort, List.partition, List.sortBy,
+  List.nub, List.sort, List.partition, List.sortBy, List.groupBy,
   null,
   Data.Tuple.swap,
   split,
