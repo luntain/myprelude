@@ -18,7 +18,8 @@ module MyPrelude (
   removeOrFail,
   readCommaDecimal,
   Data.Ord.comparing,
-  Data.Ord.Down(..)
+  Data.Ord.Down(..),
+  zlotowki
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
@@ -126,3 +127,6 @@ readCommaDecimal =
  where
    commaToDot ',' = '.'
    commaToDot x = x
+
+zlotowki :: Double -> String
+zlotowki v = printf "%.2f zł" v
