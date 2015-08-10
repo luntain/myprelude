@@ -3,7 +3,7 @@ module MyPrelude (
   module Exports,
   Data.Traversable.mapM, Data.Traversable.forM,
   Data.Traversable.foldMapDefault,
-  fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe,
+  fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
   E.throwIO, E.throw,
   printf,
   lookup,
@@ -37,7 +37,7 @@ import Control.Applicative as Exports
 import Control.Concurrent as Exports
 import qualified Data.Traversable
 import qualified Data.Map as M
-import Data.Maybe (fromMaybe,fromJust,maybeToList,mapMaybe,isNothing,isJust,listToMaybe)
+import Data.Maybe (fromMaybe,fromJust,maybeToList,mapMaybe,isNothing,isJust,listToMaybe,catMaybes)
 import Text.Printf
 import Result as Exports
 import qualified Err
@@ -129,4 +129,4 @@ readCommaDecimal =
    commaToDot x = x
 
 zlotowki :: Double -> String
-zlotowki v = printf "%.2f zł" v
+zlotowki v = printf "%.2f zł" v -- use non-breaking space
