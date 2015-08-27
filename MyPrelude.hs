@@ -31,7 +31,7 @@ import Control.Monad as Exports hiding (mapM, mapM_, fail, sequence_, forM_, for
 import Control.Monad.IO.Class as Exports
 import System.Timeout as Exports
 import Data.Monoid as Exports
-import Data.Foldable as Exports
+import Data.Foldable as Exports hiding (null)
 import Control.Arrow as Exports
 import Control.Applicative as Exports
 import Control.Concurrent as Exports
