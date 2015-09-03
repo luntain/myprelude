@@ -11,7 +11,7 @@ module MyPrelude (
   tryRead,
   Failable(..), fail,
   whenM, unlessM, ifM,
-  List.nub, List.sort, List.partition, List.sortBy, List.groupBy,
+  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits,
   null,
   Data.Tuple.swap,
   split,
@@ -32,7 +32,7 @@ import Control.Monad.IO.Class as Exports
 import System.Timeout as Exports
 import Data.Monoid as Exports
 import Data.Foldable as Exports hiding (null)
-import Control.Arrow as Exports
+import Control.Arrow as Exports hiding (loop)
 import Control.Applicative as Exports
 import Control.Concurrent as Exports
 import qualified Data.Traversable
