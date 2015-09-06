@@ -9,7 +9,7 @@ module Utils (
   readCommaDecimal,
   Failable(..), fail,
   zlotowki,
-  ifM, unlessM, whenM
+  mif, munless, mwhen, mfromMaybe
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -61,16 +61,23 @@ tryRead str =
       | all Data.Char.isSpace rest -> return a
     parses -> fail ("Ambiguous parse: '" ++ str ++ "' " ++ shorten 256 (show parses))
 
-whenM :: MonadIO m => m Bool -> m () -> m ()
-whenM cond exec = cond >>= flip when exec
+mwhen :: MonadIO m => m Bool -> m () -> m ()
+mwhen cond exec = cond >>= flip when exec
   
-unlessM :: Monad m => m Bool -> m () -> m ()
-unlessM cond exec = cond >>= flip unless exec
+munless :: Monad m => m Bool -> m () -> m ()
+munless cond exec = cond >>= flip unless exec
                     
-ifM :: Monad m => m Bool -> m a -> m a -> m a
-ifM cond thn els = do
+mif :: Monad m => m Bool -> m a -> m a -> m a
+mif cond thn els = do
   cond <- cond
   if cond then thn else els
+  
+mfromMaybe :: Monad m => m a -> m (Maybe a) -> m a
+mfromMaybe z m = do
+  val <- m
+  case val of
+    Nothing -> z
+    Just x -> return x
                   
 class Nullable c where
   null :: c a -> Bool

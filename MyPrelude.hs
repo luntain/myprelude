@@ -5,7 +5,7 @@ module MyPrelude (
   Data.Traversable.foldMapDefault,
   fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
   E.throwIO, E.throw,
-  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits,
+  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy,
   Data.Tuple.swap,
   Data.Ord.comparing,
   Data.Ord.Down(..),
