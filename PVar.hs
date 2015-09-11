@@ -7,6 +7,7 @@ import Result
 import qualified Err
 import Text.Nicify (nicify)
 import Utils (tryRead)
+import Control.Applicative
   
 data PVar a =
   FSPVar (Maybe (UpgradeFun a)) FilePath
