@@ -5,10 +5,12 @@ module MyPrelude (
   Data.Traversable.foldMapDefault,
   fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
   E.throwIO, E.throw,
-  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy,
+  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf,
   Data.Tuple.swap,
   Data.Ord.comparing,
   Data.Ord.Down(..),
+  Data.Either.partitionEithers,
+  CMR.ReaderT(..), CMR.ask, CMR.asks
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
@@ -20,6 +22,7 @@ import Control.Monad as Exports hiding (mapM, mapM_, fail, sequence_, forM_, for
 import Control.Monad.IO.Class as Exports
 import System.Timeout as Exports
 import Data.Monoid as Exports
+import qualified Data.Either
 import Data.Foldable as Exports hiding (null)
 import Control.Arrow as Exports hiding (loop)
 import Control.Applicative as Exports
@@ -39,6 +42,7 @@ import Data.Function as Exports
 import qualified Data.Ord
 import PVar as Exports
 import Utils as Exports
+import qualified Control.Monad.Reader as CMR
 
 
 filterMap = mapMaybe
