@@ -10,7 +10,9 @@ module MyPrelude (
   Data.Ord.comparing,
   Data.Ord.Down(..),
   Data.Either.partitionEithers,
-  CMR.ReaderT(..), CMR.ask, CMR.asks
+  CMR.ReaderT(..), CMR.ask, CMR.asks, CMR.runReaderT,
+  CMW.WriterT(..), CMW.tell, CMW.runWriterT,
+  Data.Functor.Identity.Identity(..),
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
@@ -43,6 +45,8 @@ import qualified Data.Ord
 import PVar as Exports
 import Utils as Exports
 import qualified Control.Monad.Reader as CMR
+import qualified Control.Monad.Writer as CMW
+import qualified Data.Functor.Identity
 
 
 filterMap = mapMaybe
