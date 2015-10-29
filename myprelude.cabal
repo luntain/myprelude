@@ -3,7 +3,7 @@ version:             0.7.8.0
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     MyPrelude, Err, Result
+  exposed-modules:     MyPrelude, Err, Result, Validation
   other-modules: PVar, Utils
   extensions: NamedFieldPuns, TypeSynonymInstances, FlexibleInstances, OverlappingInstances,
               TupleSections, LambdaCase, RankNTypes, DeriveDataTypeable,

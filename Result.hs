@@ -3,6 +3,7 @@ module Result where
 import Prelude hiding (error, lookup)
 import Control.Applicative
 import Data.Monoid
+import Data.Either
 import System.Exit
 import qualified Control.Exception as Exc
 import qualified Err
@@ -10,6 +11,12 @@ import qualified Err
 
 errorResult :: String -> Result a
 errorResult msg = Left (Err.Msg msg)
+
+concatResults :: [Result a] -> Result [a]
+concatResults results =
+  case partitionEithers results of
+    ([], rights) -> Right rights
+    (errs, _) -> Left (mconcat errs)
 
 tagResult title (Left err) = Left (Err.Tag title err)
 tagResult _ r = r

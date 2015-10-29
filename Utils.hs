@@ -7,6 +7,7 @@ module Utils (
   split,
   removeOrFail,
   readCommaDecimal,
+  tryReadCommaDecimal,
   Failable(..), fail,
   zlotowki,
   mif, munless, mwhen, mfromMaybe
@@ -96,10 +97,16 @@ split p str =
   case break p str of
    (x,"") -> [x]
    (x, _:rest) -> x:split p rest
+  
+tryReadCommaDecimal :: (Failable m, Read a, Show a, RealFloat a) => String -> m a
+tryReadCommaDecimal = genReadCommaDecimal tryRead
 
 readCommaDecimal :: (Read a, RealFloat a) => String -> a
-readCommaDecimal =
-  read
+readCommaDecimal = genReadCommaDecimal read
+   
+genReadCommaDecimal :: (String -> a) -> String -> a
+genReadCommaDecimal f =
+  f
   . map commaToDot
   . filter (/= ' ')
   . filter (/= ' ') -- epromak's non-breaking space in thousands

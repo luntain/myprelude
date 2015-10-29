@@ -5,18 +5,18 @@ module MyPrelude (
   Data.Traversable.foldMapDefault,
   fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
   E.throwIO, E.throw,
-  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf,
+  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf, List.isSuffixOf, List.unfoldr, List.isPrefixOf, List.intercalate,
   Data.Tuple.swap,
   Data.Ord.comparing,
   Data.Ord.Down(..),
   Data.Either.partitionEithers,
   CMR.ReaderT(..), CMR.ask, CMR.asks, CMR.runReaderT,
   CMW.WriterT(..), CMW.tell, CMW.runWriterT,
-  Data.Functor.Identity.Identity(..),
+  Data.Functor.Identity.Identity(..)
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
-                                  elem, notElem, concatMap, foldl, foldl1, foldr, foldr1, maximum, minimum,
+                                  elem, notElem, concatMap, foldl, foldl1, foldl', foldr, foldr1, maximum, minimum,
                                   sequence_, concat)
 import System.IO as Exports
 import Data.IORef as Exports
