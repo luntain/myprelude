@@ -10,13 +10,15 @@ module MyPrelude (
   Data.Ord.comparing,
   Data.Ord.Down(..),
   Data.Either.partitionEithers,
-  CMR.ReaderT(..), CMR.ask, CMR.asks, CMR.runReaderT,
-  CMW.WriterT(..), CMW.tell, CMW.runWriterT,
-  Data.Functor.Identity.Identity(..)
+  CMR.ReaderT(..), CMR.ask, CMR.asks,
+  CMW.WriterT(..), CMW.tell,
+  CMS.StateT(..), CMS.execStateT, CMS.modify,
+  Data.Functor.Identity.Identity(..),
+  Data.Char.toLower
   ) where
 
-import Prelude as Exports hiding (mapM, mapM_, lookup, fail, null, all, any, product, sum, and, or,
-                                  elem, notElem, concatMap, foldl, foldl1, foldl', foldr, foldr1, maximum, minimum,
+import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
+                                  elem, notElem, concatMap, foldl1, foldr, foldr1, maximum, minimum,
                                   sequence_, concat)
 import System.IO as Exports
 import Data.IORef as Exports
@@ -30,15 +32,12 @@ import Control.Arrow as Exports hiding (loop)
 import Control.Applicative as Exports
 import Control.Concurrent as Exports
 import qualified Data.Traversable
-import qualified Data.Map as M
 import Data.Maybe (fromMaybe,fromJust,maybeToList,mapMaybe,isNothing,isJust,listToMaybe,catMaybes)
 import Text.Printf
 import Result as Exports
-import qualified Err
 import System.FilePath as Exports ((</>))
 import qualified Data.List as List
 import qualified Control.Exception as E
-import qualified Data.Char 
 import qualified Data.Tuple
 import Data.Function as Exports
 import qualified Data.Ord
@@ -46,7 +45,9 @@ import PVar as Exports
 import Utils as Exports
 import qualified Control.Monad.Reader as CMR
 import qualified Control.Monad.Writer as CMW
+import qualified Control.Monad.State as CMS
 import qualified Data.Functor.Identity
+import qualified Data.Char
 
 
 filterMap = mapMaybe

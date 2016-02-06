@@ -1,6 +1,6 @@
 module Result where
 
-import Prelude hiding (error, lookup)
+import Prelude hiding (lookup)
 import Control.Applicative
 import Data.Monoid
 import Data.Either
@@ -71,7 +71,7 @@ tryResult action = do
 catchResult :: IO a -> (Err.T -> IO a) -> IO a
 catchResult action handle =
   tryResult action >>= either handle return
-  
+
 handleResult :: (Err.T -> IO a) -> IO a -> IO a
 handleResult = flip catchResult
 
@@ -88,13 +88,13 @@ instance Show e => ConvertToResult (Either e a) (Result a) where
 instance ConvertToResult (Maybe a) (Result a) where
   toResult Nothing = errorResult "Nothing"
   toResult (Just a) = Right a
-  toResultA adnotation Nothing = errorResult adnotation 
+  toResultA adnotation Nothing = errorResult adnotation
   toResultA _ (Just a) = Right a
 
 instance ConvertToResult (Maybe a) (IO a) where
   toResult Nothing = Err.throwIO "Nothing"
   toResult (Just a) = return a -- this hardly makes sense
-  toResultA adnotation Nothing = Err.throwIO adnotation 
+  toResultA adnotation Nothing = Err.throwIO adnotation
   toResultA _ (Just a) = return a
 
 instance ConvertToResult ExitCode (Result ()) where
@@ -106,6 +106,10 @@ instance ConvertToResult (Result a) (IO a) where
   toResult (Right x) = return x
   toResultA msg (Left e) = Exc.throwIO (Err.Tag msg e)
   toResultA _ (Right x) = return x
-  
-forceRight :: String -> Result a -> IO a
-forceRight = toResultA
+
+forceResult :: String -> Result a -> IO a
+forceResult = toResultA
+
+forceResultUnsafe :: Result a -> a
+forceResultUnsafe (Left e) = error ("Forced an Error: " ++ (show e))
+forceResultUnsafe (Right v) = v

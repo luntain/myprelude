@@ -1,12 +1,11 @@
 module Err (T(..), pretty, throwIO, tag) where
 
 import Prelude
-import Data.Monoid
 import Data.List
 import Data.Typeable
 import qualified Control.Exception as Exc
 
-data T = 
+data T =
     Msg String
   | List [T]
   | Tag String T
