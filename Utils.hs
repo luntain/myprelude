@@ -13,7 +13,10 @@ module Utils (
   mif, munless, mwhen, mfromMaybe,
   forceEither, forceRight, forceEitherMsg,
   polishTimeLocaleLc, diskCached,
-  createIdGenerator
+  createIdGenerator,
+  sec,
+  containsCC,
+  insideCC
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -29,6 +32,7 @@ import Text.Printf
 import Data.Time
 import qualified Data.Map as M
 import System.Directory
+import Control.Arrow
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -38,6 +42,9 @@ instance MonadIO m => Failable m where failErr err = liftIO (E.throwIO err)
 
 failStr :: Failable m => String -> m a
 failStr = failErr . Err.Msg
+
+sec :: Int -- sec in microseconds
+sec = 1000 * 1000
 
 class OverloadedLookup t k v | t -> k, t -> v where overloadedLookup :: k -> t -> Maybe v
 instance (Eq k) => OverloadedLookup [(k,v)] k v where overloadedLookup = List.lookup
@@ -188,3 +195,15 @@ diskCached file_path produce arg = do
               then return (Just cachedResult)
               else return Nothing
            _ -> error ("invalid cache file " ++ file_path)
+
+containsCC :: Ord a => (a, a) -> (a, a) -> Bool
+containsCC (a1, a2) (b1, b2) = a1 <= b1 && b2 <= a2
+
+insideCC :: Ord a => (a, a) -> a -> Bool
+insideCC (from, to) a = from <= a && a <= to
+
+
+instance Read NominalDiffTime where
+  readsPrec p s =
+    let seconds = readsPrec p s :: [(Double, String)] in
+    fmap (second tail . first (fromRational.toRational)) seconds

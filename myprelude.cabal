@@ -1,14 +1,15 @@
 name:                myprelude
 version:             0.7.8.0
 cabal-version:       >=1.10
+build-type: Simple
 
 library
-  exposed-modules:     MyPrelude, Err, Result, Validation, RecordParser
+  exposed-modules:     MyPrelude, Err, Result, Validation, RecordParser, RecordParser2
   other-modules: PVar, Utils
   extensions: NamedFieldPuns, TypeSynonymInstances, FlexibleInstances, OverlappingInstances,
               TupleSections, LambdaCase, RankNTypes, DeriveDataTypeable,
               MultiParamTypeClasses, FunctionalDependencies, FlexibleContexts, ScopedTypeVariables,
               NoImplicitPrelude, GeneralizedNewtypeDeriving, MultiWayIf, UndecidableInstances,
               TemplateHaskell
-  build-depends:       base >= 4.7 && < 5, filepath, containers, mtl, transformers, nicify-lib, time, directory, lens
+  build-depends:       base >= 4.7 && < 5, filepath, containers, mtl, transformers, nicify-lib, time, directory, lens, MissingH, data-default
   default-language:    Haskell2010

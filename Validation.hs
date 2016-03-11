@@ -6,21 +6,27 @@ import qualified Err
 import Control.Lens
 
 
+infix 4 >!
 (>!) :: (Ord a, Show a) => a -> a -> Err.T
 a >! b = if a > b then mempty else Err.Msg (show a ++ " is not greater than " ++ show b)
 
+infix 4 >=!
 (>=!) :: (Ord a, Show a) => a -> a -> Err.T
 a >=! b = if a >= b then mempty else Err.Msg (show a ++ " is not >= than " ++ show b)
 
+infix 4 <!
 (<!) :: (Ord a, Show a) => a -> a -> Err.T
 a <! b = if a < b then mempty else Err.Msg (show a ++ " is not smaller than " ++ show b)
 
+infix 4 <=!
 (<=!) :: (Ord a, Show a) => a -> a -> Err.T
 a <=! b = if a <= b then mempty else Err.Msg (show a ++ " is not <= than " ++ show b)
 
+infix 4 =!
 (=!) :: (Eq a, Show a) => a -> a -> Err.T
 a =! b = if a == b then mempty else Err.Msg (show a ++ " is not equal to " ++ show b)
 
+infix 4 /=!
 (/=!) :: (Eq a, Show a) => a -> a -> Err.T
 a /=! b = if a/=b then mempty else Err.Msg (show a ++ " is equal to " ++ show b)
 

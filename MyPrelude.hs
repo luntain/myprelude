@@ -5,7 +5,8 @@ module MyPrelude (
   Data.Traversable.foldMapDefault,
   fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
   E.throwIO, E.throw,
-  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf, List.isSuffixOf, List.unfoldr, List.isPrefixOf, List.intercalate,
+  List.nub, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf, List.isSuffixOf, List.unfoldr, List.isPrefixOf, List.intercalate, List.findIndex, List.elemIndex, List.mapAccumL, (List.\\),
+  GHC.Exts.sortWith,
   Data.Tuple.swap,
   Data.Ord.comparing,
   Data.Ord.Down(..),
@@ -14,7 +15,7 @@ module MyPrelude (
   CMW.WriterT(..), CMW.tell,
   CMS.StateT(..), CMS.execStateT, CMS.modify,
   Data.Functor.Identity.Identity(..),
-  Data.Char.toLower
+  Data.Char.toLower,
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
@@ -48,6 +49,8 @@ import qualified Control.Monad.Writer as CMW
 import qualified Control.Monad.State as CMS
 import qualified Data.Functor.Identity
 import qualified Data.Char
+import qualified GHC.Exts
+import Data.Default as Exports
 
 
 filterMap = mapMaybe
