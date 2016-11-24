@@ -38,7 +38,7 @@ import Control.Arrow
 class    Monad m => Failable m   where failErr :: Err.T -> m a
 instance Failable Maybe          where failErr _   = Nothing
 instance Failable (Either Err.T) where failErr err = Left err
-instance MonadIO m => Failable m where failErr err = liftIO (E.throwIO err)
+instance (Monad m, MonadIO m) => Failable m where failErr err = liftIO (E.throwIO err)
 
 failStr :: Failable m => String -> m a
 failStr = failErr . Err.Msg
