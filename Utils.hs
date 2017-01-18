@@ -155,15 +155,15 @@ polishTimeLocaleLc =
                  ,("Środa","Śro")
                  ,("Czwartek","Czw"),("Piątek","Pią"),("Sobota","Sob")],
               months =
-                [("styczenia","sty")
+                [("stycznia","sty")
                 ,("lutego","lut")
                 ,("marca","mar")
                 ,("kwietnia","kwi")
                 ,("maja","maj")
                 ,("czerwca","cze")
-                ,("lipica","lip")
+                ,("lipca","lip")
                 ,("sierpnia","sie")
-                ,("wrzesnia","wrz")
+                ,("września","wrz")
                 ,("października","paź")
                 ,("listopada","lis")
                 ,("grudnia","gru")],
