@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 module Result where
 
 import Prelude hiding (lookup)
@@ -32,7 +33,10 @@ instance Monoid a => Monoid (Result a) where
   mappend (Right _) (Left err) = Left err
   mappend (Left err1) (Left err2) = Left (mappend err1 err2)
 
-instance Monad (Either Err.T) where
+-- I forgot about it, and it is somewhat odd, to I ever use it?
+-- this is different from the regular Either instance that
+-- it does not throw an exception for `fail`
+instance {-# OVERLAPPING #-} Monad (Either Err.T) where
   Left  l >>= _ = Left l
   Right r >>= k = k r
   return = Right

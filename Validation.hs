@@ -1,6 +1,5 @@
 module Validation where
 
-import Prelude
 import Utils
 import qualified Err
 import Control.Lens

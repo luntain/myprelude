@@ -1,6 +1,5 @@
 module Err (T(..), pretty, throwIO, tag) where
 
-import Prelude
 import Data.List
 import Data.Typeable
 import qualified Control.Exception as Exc
