@@ -5,6 +5,7 @@ module Utils (
   lookup,
   lookupIn,
   tryRead,
+  tryLast,
   split,
   removeOrFail,
   readCommaDecimal,
@@ -69,6 +70,10 @@ shorten maxLen msg =
   case List.splitAt maxLen msg of
     (x, "") -> x
     (x, _rest) -> take (maxLen - 5) x ++ "(...)"
+
+tryLast :: (Failable m) => [a] -> m a
+tryLast [] = failStr "called tryLast on empty list"
+tryLast xs = return (last xs)
 
 tryRead :: (Read a, Show a, Failable m) => String -> m a
 tryRead str =

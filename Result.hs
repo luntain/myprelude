@@ -33,6 +33,7 @@ instance Monoid a => Monoid (Result a) where
   mappend (Right _) (Left err) = Left err
   mappend (Left err1) (Left err2) = Left (mappend err1 err2)
 
+
 -- I forgot about it, and it is somewhat odd, to I ever use it?
 -- this is different from the regular Either instance that
 -- it does not throw an exception for `fail`
@@ -42,7 +43,7 @@ instance {-# OVERLAPPING #-} Monad (Either Err.T) where
   return = Right
   fail = errorResult
 
-instance Alternative (Either Err.T) where
+instance {-# OVERLAPPING #-} Alternative (Either Err.T) where
   empty = errorResult "None"
   Left err1 <|> Left err2 = Left (err1 <> err2)
   Right x <|> _ = Right x
@@ -119,3 +120,7 @@ forceResult = toResultA
 forceResultUnsafe :: Result a -> a
 forceResultUnsafe (Left e) = error ("Forced an Error: " ++ (show e))
 forceResultUnsafe (Right v) = v
+
+resultToMaybe :: Result a -> Maybe a
+resultToMaybe (Left _) = Nothing
+resultToMaybe (Right a) = Just a
