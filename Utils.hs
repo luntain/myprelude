@@ -4,8 +4,9 @@ module Utils (
   printf,
   lookup,
   lookupIn,
-  tryRead,
   tryLast,
+  tryHead,
+  tryRead,
   split,
   removeOrFail,
   readCommaDecimal,
@@ -74,6 +75,10 @@ shorten maxLen msg =
 tryLast :: (Failable m) => [a] -> m a
 tryLast [] = failStr "called tryLast on empty list"
 tryLast xs = return (last xs)
+
+tryHead :: (Failable m) => [a] -> m a
+tryHead (x:_) = return x
+tryHead [] = failStr "tryHead on an empty list"
 
 tryRead :: (Read a, Show a, Failable m) => String -> m a
 tryRead str =
