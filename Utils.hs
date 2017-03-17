@@ -19,7 +19,12 @@ module Utils (
   createIdGenerator,
   sec,
   containsCC,
-  insideCC
+  insideCC,
+  unionAL,
+  foldlAL,
+  foldrAL,
+  zipWithAL,
+  singleton
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -219,3 +224,28 @@ instance Read NominalDiffTime where
   readsPrec p s =
     let seconds = readsPrec p s :: [(Double, String)] in
     fmap (second tail . first (fromRational.toRational)) seconds
+
+unionAL :: Ord k => (a -> a -> a) -> [(k, a)] -> [(k, a)] -> [(k, a)]
+unionAL f as bs = zipWithAL f id as bs
+
+
+foldlAL :: Ord k => (b -> a -> b) -> (a -> b) -> [[(k, a)]] -> [(k, b)]
+foldlAL f z xs = go [] xs
+  where go acc [] = acc
+        go acc (xs:xss) = go (zipWithAL f z acc xs) xss
+
+foldrAL :: Ord k => (a -> b -> b) -> (a -> b) -> [[(k, a)]] -> [(k, b)]
+foldrAL f z [] = []
+foldrAL f z (xs:xss) = zipWithAL (flip f) z (foldrAL f z xss) xs
+
+zipWithAL :: Ord k => (z -> a -> z) -> (a -> z) -> [(k, z)] -> [(k, a)] -> [(k, z)]
+zipWithAL _f _z zs [] = zs
+zipWithAL f z [] xs = map (second z) xs
+zipWithAL f z (a:as) (x:xs)
+  | fst a < fst x = a : zipWithAL f z as (x:xs)
+  | fst a > fst x = (fst x, z (snd x)) : zipWithAL f z (a:as) xs
+  | otherwise = fmap (f (snd a)) x : zipWithAL f z as xs
+
+-- I was surprised that singleton was not defined in Data.List
+singleton :: a -> [a]
+singleton x = [x]
