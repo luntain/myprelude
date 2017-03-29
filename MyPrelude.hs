@@ -15,7 +15,8 @@ module MyPrelude (
   CMW.WriterT(..), CMW.tell,
   CMS.StateT(..), CMS.execStateT, CMS.modify,
   Data.Functor.Identity.Identity(..),
-  Data.Char.toLower
+  Data.Char.toLower,
+  Text
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
@@ -51,6 +52,7 @@ import qualified Data.Functor.Identity
 import qualified Data.Char
 import qualified GHC.Exts
 import Data.Default as Exports
+import Data.Text (Text)
 
 
 filterMap = mapMaybe
