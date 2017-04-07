@@ -19,7 +19,8 @@ module Utils (
   createIdGenerator,
   sec,
   containsCC,
-  insideCC
+  insideCC,
+  bool, guarded
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -36,6 +37,7 @@ import Data.Time
 import qualified Data.Map as M
 import System.Directory
 import Control.Arrow
+import Control.Applicative (Alternative, empty)
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -219,3 +221,10 @@ instance Read NominalDiffTime where
   readsPrec p s =
     let seconds = readsPrec p s :: [(Double, String)] in
     fmap (second tail . first (fromRational.toRational)) seconds
+
+
+bool :: a -> a -> Bool -> a
+bool f t p = if p then t else f
+
+guarded :: Alternative f => (a -> Bool) -> a -> f a
+guarded p x = bool Control.Applicative.empty (pure x) (p x)
