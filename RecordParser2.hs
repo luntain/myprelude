@@ -3,7 +3,7 @@ module RecordParser2 where
 import MyPrelude
 import Data.String.Utils
 
-data M a = M { unm :: [String] -> Result ([String] -> Result a) }
+newtype M a = M { unm :: [String] -> Result ([String] -> Result a) }
 
 instance Functor M where
    fmap f (M g) = M (fmap (fmap . fmap . fmap $ f) g)
@@ -40,3 +40,21 @@ fromField n f =
              Left err -> Left err
              Right res -> f res
   where M field = stringField n
+
+fromFields :: [String] -> ([String] -> Result a) -> M a
+fromFields ns f =
+  M $ \hdr ->
+    let ixs = catResults . map (\n -> toResultA n . elemIndex (map toLower n) . map (map toLower . strip) $ hdr) $ ns in
+    fmap (g f) ixs
+  where
+    g :: ([String] -> Result a) -> [Int] -> [String] -> Result a
+    g f ixs flds =
+      let relevantFields = catResults . map (\ix -> toResultA (printf "no col %d for in %s" ix (show flds)) . findByIndex ix $ flds) $ ixs in
+      relevantFields >>= f
+
+
+findByIndex :: Int -> [a] -> Maybe a
+findByIndex i xs =
+  case drop i xs of
+    [] -> Nothing
+    x:_ -> return x
