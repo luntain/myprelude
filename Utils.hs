@@ -25,7 +25,8 @@ module Utils (
   foldrAL,
   zipWithAL,
   singleton,
-  writeFileAtomically
+  writeFileAtomically,
+  bool, guarded
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -42,6 +43,7 @@ import Data.Time
 import qualified Data.Map as M
 import System.Directory
 import Control.Arrow
+import Control.Applicative (Alternative, empty)
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -259,3 +261,9 @@ writeFileAtomically fp content = do
   hPutStr h content
   hClose h
   renameFile tfp fp
+
+bool :: a -> a -> Bool -> a
+bool f t p = if p then t else f
+
+guarded :: Alternative f => (a -> Bool) -> a -> f a
+guarded p x = bool Control.Applicative.empty (pure x) (p x)
