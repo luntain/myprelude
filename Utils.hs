@@ -24,7 +24,8 @@ module Utils (
   foldlAL,
   foldrAL,
   zipWithAL,
-  singleton
+  singleton,
+  writeFileAtomically
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -249,3 +250,12 @@ zipWithAL f z (a:as) (x:xs)
 -- I was surprised that singleton was not defined in Data.List
 singleton :: a -> [a]
 singleton x = [x]
+
+-- this function is invalid to windows
+writeFileAtomically :: FilePath -> String -> IO ()
+writeFileAtomically fp content = do
+  tempdir <- getTemporaryDirectory
+  (tfp, h) <- openBinaryTempFileWithDefaultPermissions tempdir (last $ split (=='/') fp)
+  hPutStr h content
+  hClose h
+  renameFile tfp fp
