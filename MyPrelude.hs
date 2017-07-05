@@ -7,6 +7,7 @@ module MyPrelude (
   E.throwIO, E.throw,
   List.nub, List.nubBy, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf, List.isSuffixOf, List.unfoldr, List.isPrefixOf, List.intercalate, List.findIndex, List.elemIndex, List.mapAccumL, (List.\\), List.foldl1',
   GHC.Exts.sortWith,
+  GHC.Exts.fromList, -- could be confusing that toList comes from Foldable, but fromList from IsList
   Data.Tuple.swap,
   Data.Ord.comparing,
   Data.Ord.Down(..),
