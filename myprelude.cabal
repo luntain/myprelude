@@ -6,7 +6,7 @@ build-type: Simple
 library
   exposed-modules:     MyPrelude, Err, Result, Validation, RecordParser, RecordParser2
   other-modules:       PVar, Utils
-  build-depends:       base >= 4.7 && < 5, filepath, containers, mtl, transformers, nicify-lib, time, directory, lens, MissingH, data-default, text
+  build-depends:       base >= 4.7 && < 5, filepath, containers, mtl, transformers, nicify-lib, time, directory, lens, MissingH, data-default, text, unordered-containers, hashable
   default-language:    Haskell2010
 
 test-suite test

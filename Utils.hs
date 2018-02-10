@@ -26,7 +26,8 @@ module Utils (
   zipWithAL,
   singleton,
   writeFileAtomically,
-  bool, guarded
+  bool, guarded,
+  insertPrependHM
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -44,6 +45,8 @@ import qualified Data.Map as M
 import System.Directory
 import Control.Arrow
 import Control.Applicative (Alternative, empty)
+import qualified Data.HashMap.Strict as HM
+import Data.Hashable (Hashable)
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -267,3 +270,7 @@ bool f t p = if p then t else f
 
 guarded :: Alternative f => (a -> Bool) -> a -> f a
 guarded p x = bool Control.Applicative.empty (pure x) (p x)
+
+-- this is often used abstraction, perhaps too often
+insertPrependHM :: (Ord k, Hashable k) => k -> v -> HM.HashMap k [v] -> HM.HashMap k [v]
+insertPrependHM k v = HM.insertWith (\_new old -> v : old) k [v]
