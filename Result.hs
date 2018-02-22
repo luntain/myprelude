@@ -26,6 +26,8 @@ tagResult _ r = r
 
 type Result a = Either Err.T a
 
+-- there is a scary looking semigroup instance for Either,
+-- which colides with this one, but in MyPredlue I export Data.Monoid, so it should be fine
 instance Monoid a => Monoid (Result a) where
   mempty = Right mempty
   mappend (Right a)  (Right b) = Right (mappend a b)

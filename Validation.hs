@@ -5,6 +5,8 @@ import qualified Err
 import Control.Lens
 
 
+-- <> is infixr 6 :|
+
 infix 4 >!
 (>!) :: (Ord a, Show a) => a -> a -> Err.T
 a >! b = if a > b then mempty else Err.Msg (show a ++ " is not greater than " ++ show b)
@@ -42,6 +44,9 @@ all p = mconcat . map p'
   where p' x = if p x /= mempty
                   then Err.tag (show x) (p x)
                   else mempty
+
+ensure :: String -> Bool -> Err.T
+ensure label condition = if condition then mempty else Err.Msg label
 
 validate :: Failable m => Err.T -> m ()
 validate e =

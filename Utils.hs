@@ -28,6 +28,7 @@ module Utils (
   writeFileAtomically,
   bool, guarded,
   insertPrependHM
+, Opaque (..)
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -47,6 +48,7 @@ import Control.Arrow
 import Control.Applicative (Alternative, empty)
 import qualified Data.HashMap.Strict as HM
 import Data.Hashable (Hashable)
+import qualified Data.HashMap.Strict as HM
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -64,6 +66,7 @@ sec = 1000 * 1000
 class OverloadedLookup t k v | t -> k, t -> v where overloadedLookup :: k -> t -> Maybe v
 instance (Eq k) => OverloadedLookup [(k,v)] k v where overloadedLookup = List.lookup
 instance (Ord k) => OverloadedLookup (M.Map k v) k v where overloadedLookup = M.lookup
+instance (Eq k, Hashable k) => OverloadedLookup (HM.HashMap k v) k v where overloadedLookup = HM.lookup
 
 lookup :: (OverloadedLookup t k v, Show k, Show t, Failable m) => k -> t -> m v
 lookup k xs = lookupIn (shorten 256 (show xs)) k xs
@@ -274,3 +277,7 @@ guarded p x = bool Control.Applicative.empty (pure x) (p x)
 -- this is often used abstraction, perhaps too often
 insertPrependHM :: (Ord k, Hashable k) => k -> v -> HM.HashMap k [v] -> HM.HashMap k [v]
 insertPrependHM k v = HM.insertWith (\_new old -> v : old) k [v]
+
+newtype Opaque a = Opaque { unOpaque :: a }
+instance Show (Opaque a) where show = const "<opaque>"
+instance Eq (Opaque a) where (==) = const (const False)
