@@ -51,3 +51,12 @@ ensure label condition = if condition then mempty else Err.Msg label
 validate :: Failable m => Err.T -> m ()
 validate e =
   if e == mempty then return () else failErr e
+
+approxEqual :: (RealFrac a, Show a) => Double -> a -> a -> Err.T
+approxEqual ratio x y =
+  if realToFrac x - realToFrac y < ratio * avg
+    then mempty
+    else Err.Msg ("The numbers are too far apart: " ++ show x ++ " " ++ show y)
+  where
+    avg :: Double
+    avg = realToFrac (x + y) / 2
