@@ -54,7 +54,7 @@ validate e =
 
 approxEqual :: (RealFrac a, Show a) => Double -> a -> a -> Err.T
 approxEqual ratio x y =
-  if realToFrac x - realToFrac y < ratio * avg
+  if abs (realToFrac x - realToFrac y) < abs (ratio * avg)
     then mempty
     else Err.Msg ("The numbers are too far apart: " ++ show x ++ " " ++ show y)
   where
