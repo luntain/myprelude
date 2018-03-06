@@ -29,6 +29,7 @@ module Utils (
   bool, guarded,
   insertPrependHM
 , Opaque (..)
+, Taggable (..)
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -49,6 +50,8 @@ import Control.Applicative (Alternative, empty)
 import qualified Data.HashMap.Strict as HM
 import Data.Hashable (Hashable)
 import qualified Data.HashMap.Strict as HM
+import qualified Err
+import qualified Result
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -59,6 +62,10 @@ instance {-# OVERLAPPABLE #-} (Monad m, MonadIO m) => Failable m where failErr e
 
 failStr :: Failable m => String -> m a
 failStr = failErr . Err.Msg
+
+class    Taggable a                 where tag :: String -> a -> a
+instance Taggable Err.T             where tag = Err.tag
+instance Taggable (Result.Result a) where tag = Result.tagResult
 
 sec :: Int -- sec in microseconds
 sec = 1000 * 1000

@@ -3,7 +3,7 @@ module MyPrelude (
   module Exports,
   Data.Traversable.mapM, Data.Traversable.forM,
   Data.Traversable.foldMapDefault,
-  fromMaybe, fromJust, maybeToList, mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
+  fromMaybe, fromJust, maybeToList, Data.Maybe.mapMaybe, filterMap, isNothing, isJust, listToMaybe, catMaybes,
   E.throwIO, E.throw,
   List.nub, List.nubBy, List.sort, List.partition, List.sortBy, List.groupBy, List.inits, List.insertBy, List.isInfixOf, List.isSuffixOf, List.unfoldr, List.isPrefixOf, List.intercalate, List.findIndex, List.elemIndex, List.mapAccumL, (List.\\), List.foldl1',
   GHC.Exts.sortWith,
@@ -16,7 +16,9 @@ module MyPrelude (
   CMS.StateT(..), CMS.execStateT, CMS.modify,
   Data.Functor.Identity.Identity(..),
   Data.Char.toLower,
-  Text
+  -- often used types:
+  Text,
+  HM.HashMap
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
@@ -53,6 +55,6 @@ import qualified Data.Char
 import qualified GHC.Exts
 import Data.Default as Exports
 import Data.Text (Text)
+import Data.HashMap.Strict as HM
 
-
-filterMap = mapMaybe
+filterMap = Data.Maybe.mapMaybe
