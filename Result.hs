@@ -90,6 +90,10 @@ class ConvertToResult a b where
   toResultA :: String -> a -> b
   toResultA _ = toResult
 
+instance {-# OVERLAPPING #-} ConvertToResult (Either String a) (Result a) where
+  toResult (Left x) = Left (Err.Msg x)
+  toResult (Right x) = Right x
+
 instance Show e => ConvertToResult (Either e a) (Result a) where
   toResult (Left x) = Left (Err.Msg (show x))
   toResult (Right x) = Right x

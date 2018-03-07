@@ -1,6 +1,5 @@
 {-# LANGUAGE FunctionalDependencies, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances #-}
 module Utils (
-  null,
   printf,
   lookup,
   lookupIn,
@@ -126,17 +125,6 @@ mfromMaybe z m = do
   case val of
     Nothing -> z
     Just x -> return x
-
-class Nullable c where
-  null :: c a -> Bool
-
-instance Nullable [] where
-  null [] = True
-  null _ = False
-
-instance Nullable Maybe where
-  null Nothing = True
-  null _ = False
 
 split :: (Char -> Bool) -> String -> [String]
 split _ [] = []

@@ -16,9 +16,15 @@ module MyPrelude (
   CMS.StateT(..), CMS.execStateT, CMS.modify,
   Data.Functor.Identity.Identity(..),
   Data.Char.toLower,
+  -- IsList, IsString
+  GHC.Exts.IsList(fromList),
+  Data.String.IsString(..),
   -- often used types:
   Text,
-  HM.HashMap
+  HM.HashMap,
+  HS.HashSet,
+  LByteString,
+  BS.ByteString
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
@@ -31,7 +37,7 @@ import Control.Monad.IO.Class as Exports
 import System.Timeout as Exports
 import Data.Monoid as Exports
 import qualified Data.Either
-import Data.Foldable as Exports hiding (null)
+import Data.Foldable as Exports hiding (toList)
 import Control.Arrow as Exports hiding (loop)
 import Control.Applicative as Exports
 import Control.Concurrent as Exports
@@ -56,5 +62,11 @@ import qualified GHC.Exts
 import Data.Default as Exports
 import Data.Text (Text)
 import Data.HashMap.Strict as HM
+import qualified Data.HashSet as HS
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.String
+
+type LByteString = LBS.ByteString
 
 filterMap = Data.Maybe.mapMaybe
