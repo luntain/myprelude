@@ -37,7 +37,7 @@ import Control.Monad.IO.Class as Exports
 import System.Timeout as Exports
 import Data.Monoid as Exports
 import qualified Data.Either
-import Data.Foldable as Exports hiding (toList)
+import Data.Foldable as Exports
 import Control.Arrow as Exports hiding (loop)
 import Control.Applicative as Exports
 import Control.Concurrent as Exports
