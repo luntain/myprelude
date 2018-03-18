@@ -20,6 +20,8 @@ concatResults results =
     (errs, _) -> Left (mconcat errs)
 
 catResults = concatResults
+catResults_ :: [Result a] -> Result ()
+catResults_ = fmap (const ()) . catResults
 
 tagResult title (Left err) = Left (Err.Tag title err)
 tagResult _ r = r
