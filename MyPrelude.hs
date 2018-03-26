@@ -24,7 +24,8 @@ module MyPrelude (
   HM.HashMap,
   HS.HashSet,
   LByteString,
-  BS.ByteString
+  BS.ByteString,
+  Generic
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
@@ -66,6 +67,7 @@ import qualified Data.HashSet as HS
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.String
+import GHC.Generics (Generic)
 
 type LByteString = LBS.ByteString
 
