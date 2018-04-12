@@ -29,6 +29,7 @@ module Utils (
   insertPrependHM
 , Opaque (..)
 , Taggable (..)
+, pluckFirst
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -166,6 +167,14 @@ createIdGenerator :: (Enum x, Num x) => IO (IO x)
 createIdGenerator = do
   r <- newIORef 0
   return (atomicModifyIORef' r (\i -> (succ i, i)))
+
+-- I wonder what is the performance of that funtion
+-- Perhaps it is the reason why it is not in the standard lib
+pluckFirst :: (a -> Bool) -> [a] -> (Maybe a, [a])
+pluckFirst _p [] = (Nothing, [])
+pluckFirst p  (a:as)
+  | p a = (Just a, as)
+  | otherwise = second (a:) (pluckFirst p as)
 
 -- lower case
 polishTimeLocaleLc =
