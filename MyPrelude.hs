@@ -11,6 +11,7 @@ module MyPrelude (
   Data.Ord.comparing,
   Data.Ord.Down(..),
   Data.Either.partitionEithers,
+  Data.Either.isLeft,
   CMR.ReaderT(..), CMR.ask, CMR.asks,
   CMW.WriterT(..), CMW.tell,
   CMS.StateT(..), CMS.execStateT, CMS.modify,
