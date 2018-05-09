@@ -18,7 +18,7 @@ module MyPrelude (
   Data.Functor.Identity.Identity(..),
   Data.Char.toLower,
   -- IsList, IsString
-  GHC.Exts.IsList(fromList),
+  GHC.Exts.IsList(fromList), toList',
   Data.String.IsString(..),
   -- often used types:
   Text,
@@ -73,3 +73,6 @@ import GHC.Generics (Generic)
 type LByteString = LBS.ByteString
 
 filterMap = Data.Maybe.mapMaybe
+
+toList' :: GHC.Exts.IsList t => t -> [GHC.Exts.Item t]
+toList' = GHC.Exts.toList
