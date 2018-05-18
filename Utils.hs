@@ -30,6 +30,7 @@ module Utils (
 , Opaque (..)
 , Taggable (..)
 , pluckFirst
+, breakIntoGroups
 ) where
 
 import Prelude hiding (fail, null, lookup)
@@ -277,6 +278,17 @@ bool f t p = if p then t else f
 
 guarded :: Alternative f => (a -> Bool) -> a -> f a
 guarded p x = bool Control.Applicative.empty (pure x) (p x)
+
+-- break between any two elements that satisfy given predicate
+breakIntoGroups :: (a -> a -> Bool) -> [a] -> [[a]]
+breakIntoGroups _ [] = []
+breakIntoGroups break (x:rest) = let (group, rest') = f x rest in group : breakIntoGroups break rest'
+  where
+    f prev [] = ([prev], [])
+    f prev (x:rest)
+      | prev `break` x = ([prev],rest)
+      | otherwise = first (prev:) (f x rest)
+
 
 -- this is often used abstraction, perhaps too often
 insertPrependHM :: (Ord k, Hashable k) => k -> v -> HM.HashMap k [v] -> HM.HashMap k [v]
