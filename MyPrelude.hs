@@ -12,6 +12,7 @@ module MyPrelude (
   Data.Ord.Down(..),
   Data.Either.partitionEithers,
   Data.Either.isLeft,
+  Data.Either.fromRight, Data.Either.fromLeft,
   CMR.ReaderT(..), CMR.ask, CMR.asks,
   CMW.WriterT(..), CMW.tell,
   CMS.StateT(..), CMS.execStateT, CMS.modify,
@@ -40,7 +41,8 @@ import System.Timeout as Exports
 import Data.Monoid as Exports
 import qualified Data.Either
 import Data.Foldable as Exports
-import Control.Arrow as Exports hiding (loop)
+import Control.Arrow as Exports hiding (first, second, loop)
+import Data.Bifunctor as Exports
 import Control.Applicative as Exports
 import Control.Concurrent as Exports
 import qualified Data.Traversable
