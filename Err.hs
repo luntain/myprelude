@@ -10,7 +10,8 @@ data T =
   | Tag String T
   deriving (Read, Show, Typeable, Eq)
 
-instance Exc.Exception T
+instance Exc.Exception T where
+  displayException = pretty 0
 
 instance Monoid T where
   mempty = List []
