@@ -31,11 +31,12 @@ module Utils (
 , Taggable (..)
 , pluckFirst
 , breakIntoGroups
+, memoizeWithAMap
 ) where
 
 import Prelude hiding (fail, null, lookup)
 import System.IO
-import Data.IORef (atomicModifyIORef', newIORef)
+import Data.IORef (atomicModifyIORef', newIORef, modifyIORef, readIORef)
 import qualified Err
 import qualified Control.Exception as E
 import qualified Data.Char
@@ -44,7 +45,7 @@ import qualified Data.List as List
 import Control.Monad.IO.Class
 import Text.Printf
 import Data.Time
-import qualified Data.Map as M
+import qualified Data.Map.Strict as M
 import System.Directory
 import Control.Arrow
 import Control.Applicative (Alternative, empty)
@@ -52,7 +53,7 @@ import qualified Data.HashMap.Strict as HM
 import Data.Hashable (Hashable)
 import qualified Data.HashMap.Strict as HM
 import qualified Err
-import qualified Result
+import Result
 
 
 class    Monad m => Failable m   where failErr :: Err.T -> m a
@@ -297,3 +298,17 @@ insertPrependHM k v = HM.insertWith (\_new old -> v : old) k [v]
 newtype Opaque a = Opaque { unOpaque :: a }
 instance Show (Opaque a) where show = const "<opaque>"
 instance Eq (Opaque a) where (==) = const (const False)
+
+
+-- single threaded please
+memoizeWithAMap :: Ord a => (a -> IO b) -> IO (a -> IO (Result b))
+memoizeWithAMap f = do
+  cache <- newIORef M.empty
+  return $ \key -> do
+    cache' <- readIORef cache
+    case M.lookup key cache' of
+      Just res -> return res
+      Nothing -> do
+        res <- tryResult $ f key
+        modifyIORef cache (M.insert key res)
+        return res
