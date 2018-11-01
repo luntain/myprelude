@@ -18,6 +18,7 @@ module MyPrelude (
   CMS.StateT(..), CMS.execStateT, CMS.modify,
   Data.Functor.Identity.Identity(..),
   Data.Char.toLower,
+  Data.Char.toUpper,
   -- IsList, IsString
   GHC.Exts.IsList(fromList), toList',
   Data.String.IsString(..),
@@ -27,7 +28,9 @@ module MyPrelude (
   HS.HashSet,
   LByteString,
   BS.ByteString,
-  Generic
+  Generic,
+
+  exceptionContext
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,

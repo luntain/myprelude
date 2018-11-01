@@ -1,4 +1,4 @@
-{-# LANGUAGE FunctionalDependencies, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances #-}
+{-# LANGUAGE FunctionalDependencies, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances, DeriveDataTypeable #-}
 module Utils (
   printf,
   lookup,
@@ -32,13 +32,14 @@ module Utils (
 , pluckFirst
 , breakIntoGroups
 , memoizeWithAMap
+, exceptionContext
 ) where
 
 import Prelude hiding (fail, null, lookup)
 import System.IO
 import Data.IORef (atomicModifyIORef', newIORef, modifyIORef, readIORef)
 import qualified Err
-import qualified Control.Exception as E
+import qualified Control.Exception.Safe as E
 import qualified Data.Char
 import Control.Monad hiding (fail)
 import qualified Data.List as List
@@ -312,3 +313,11 @@ memoizeWithAMap f = do
         res <- tryResult $ f key
         modifyIORef cache (M.insert key res)
         return res
+
+
+-- add context to an exception
+data ExceptionContext = ExceptionContext String E.SomeException deriving (Show, E.Typeable)
+instance E.Exception ExceptionContext
+
+exceptionContext :: String -> IO a -> IO a
+exceptionContext ctx = E.handleAny (E.throwIO . ExceptionContext ctx)
