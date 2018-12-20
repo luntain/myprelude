@@ -39,8 +39,8 @@ ensureIsJust :: Maybe a -> Result ()
 ensureIsJust Nothing = errorResult ("Expected Just, but got Nothing")
 ensureIsJust (Just _) = mempty
 
-all :: Show a => (a -> Result ()) -> [a] -> Result ()
-all p = mconcat . map p'
+ensureAll :: Show a => (a -> Result ()) -> [a] -> Result ()
+ensureAll p = mconcat . map p'
   where p' x = if p x /= mempty
                   then tag (show x) (p x)
                   else mempty

@@ -96,6 +96,7 @@ instance {-# OVERLAPPING #-} ConvertToResult (Either String a) (Result a) where
   toResult (Left x) = Left (Err.Msg x)
   toResult (Right x) = Right x
 
+-- using it is problematic as it loses a = a equality between input output
 instance Show e => ConvertToResult (Either e a) (Result a) where
   toResult (Left x) = Left (Err.Msg (show x))
   toResult (Right x) = Right x
@@ -121,6 +122,15 @@ instance ConvertToResult (Result a) (IO a) where
   toResult (Right x) = return x
   toResultA msg (Left e) = Exc.throwIO (Err.Tag msg e)
   toResultA _ (Right x) = return x
+
+
+class ConvertEither m0 m1 where
+  ce :: m0 a -> m1 a
+
+instance ConvertEither (Either String) (Either Err.T) where
+  ce (Left x) = Left (Err.Msg (show x))
+  ce (Right x) = Right x
+
 
 forceResult :: String -> Result a -> IO a
 forceResult = toResultA
