@@ -50,7 +50,7 @@ ensure label condition = if condition then mempty else errorResult label
 
 approxEqual :: (RealFrac a, Show a) => Double -> a -> a -> Result ()
 approxEqual ratio x y =
-  if abs (realToFrac x - realToFrac y) < abs (ratio * avg)
+  if abs (realToFrac x - realToFrac y) <= abs (ratio * avg)
     then mempty
     else errorResult ("The numbers are too far apart: " ++ show x ++ " " ++ show y)
   where
