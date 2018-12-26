@@ -23,14 +23,12 @@ module MyPrelude (
   GHC.Exts.IsList(fromList), toList',
   Data.String.IsString(..),
   -- often used types:
-  Text,
+  Text, pack,
   HM.HashMap,
   HS.HashSet,
   LByteString,
   BS.ByteString,
-  Generic,
-
-  exceptionContext
+  Generic
   ) where
 
 import Prelude as Exports hiding (mapM, mapM_, lookup, null, all, any, product, sum, and, or,
@@ -67,7 +65,7 @@ import qualified Data.Functor.Identity
 import qualified Data.Char
 import qualified GHC.Exts
 import Data.Default as Exports
-import Data.Text (Text)
+import Data.Text (Text, pack)
 import Data.HashMap.Strict as HM
 import qualified Data.HashSet as HS
 import qualified Data.ByteString as BS
