@@ -166,9 +166,9 @@ forceEitherMsg :: Show e => String -> Either e a -> a
 forceEitherMsg msg (Left e) = error ("Forced a Left: " ++ msg ++ " " ++ (show e))
 forceEitherMsg _ (Right v) = v
 
-createIdGenerator :: (Enum x, Num x) => IO (IO x)
-createIdGenerator = do
-  r <- newIORef 0
+createIdGenerator :: (Enum a, Num a) => a -> IO (IO a)
+createIdGenerator initial = do
+  r <- newIORef initial
   return (atomicModifyIORef' r (\i -> (succ i, i)))
 
 -- I wonder what is the performance of that funtion

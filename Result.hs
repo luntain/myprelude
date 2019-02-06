@@ -1,7 +1,8 @@
-{-# LANGUAGE NoImplicitPrelude, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
+{-# LANGUAGE NoImplicitPrelude, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances, FunctionalDependencies #-}
 module Result where
 
 import Prelude hiding (lookup)
+import Control.Monad.IO.Class
 import Control.Applicative
 import Data.Monoid
 import Data.Either
@@ -86,41 +87,41 @@ catchResult action handle =
 handleResult :: (Err.T -> IO a) -> IO a -> IO a
 handleResult = flip catchResult
 
-class ConvertToResult a b where
-  toResult :: a -> b
+class ConvertToResult m1 m2 where
+  toResult :: m1 a -> m2 a
   -- from' adds an err annotation
-  toResultA :: String -> a -> b
+  toResultA :: String -> m1 a -> m2 a
   toResultA _ = toResult
 
-instance {-# OVERLAPPING #-} ConvertToResult (Either String a) (Result a) where
+instance {-# OVERLAPPING #-} ConvertToResult (Either String) (Either Err.T) where
   toResult (Left x) = Left (Err.Msg x)
   toResult (Right x) = Right x
 
 -- using it is problematic as it loses a = a equality between input output
-instance Show e => ConvertToResult (Either e a) (Result a) where
+instance Show e => ConvertToResult (Either e) (Either Err.T) where
   toResult (Left x) = Left (Err.Msg (show x))
   toResult (Right x) = Right x
 
-instance ConvertToResult (Maybe a) (Result a) where
+instance ConvertToResult Maybe (Either Err.T) where
   toResult Nothing = errorResult "Nothing"
   toResult (Just a) = Right a
   toResultA adnotation Nothing = errorResult adnotation
   toResultA _ (Just a) = Right a
 
-instance ConvertToResult (Maybe a) (IO a) where
+instance ConvertToResult Maybe IO where
   toResult Nothing = Err.throwIO "Nothing"
   toResult (Just a) = return a -- this hardly makes sense
   toResultA adnotation Nothing = Err.throwIO adnotation
   toResultA _ (Just a) = return a
 
-instance ConvertToResult ExitCode (Result ()) where
-  toResult ExitSuccess = Right ()
-  toResult (ExitFailure x) = Left (Err.Msg ("Exit failure code was: " ++ show x))
+-- instance ConvertToResult ExitCode (Result ()) where
+--   toResult ExitSuccess = Right ()
+--   toResult (ExitFailure x) = Left (Err.Msg ("Exit failure code was: " ++ show x))
 
-instance ConvertToResult (Result a) (IO a) where
-  toResult (Left e) = Exc.throwIO e
+instance MonadIO m => ConvertToResult (Either Err.T) m where
+  toResult (Left e) = liftIO $ Exc.throwIO e
   toResult (Right x) = return x
-  toResultA msg (Left e) = Exc.throwIO (Err.Tag msg e)
+  toResultA msg (Left e) = liftIO $ Exc.throwIO (Err.Tag msg e)
   toResultA _ (Right x) = return x
 
 
