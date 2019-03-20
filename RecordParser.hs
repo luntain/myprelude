@@ -3,6 +3,7 @@ module RecordParser where
 import Prelude
 import Result
 import Text.Printf
+import qualified Data.Text as T
 
 data M a = M { unm :: [String] -> Result a }
 
@@ -33,6 +34,9 @@ parse (M f) = f
 
 stringField :: Int -> M String
 stringField n = M (getField n)
+
+textField :: Int -> M T.Text
+textField n = M (fmap T.pack . getField n)
 
 fromField :: Int -> (String -> Result a) -> M a
 fromField n f =
