@@ -13,7 +13,6 @@ module ErrorOr (
 where
 
 import Data.Semigroup
-import Data.List
 
 data ErrorOr a = ErrorOr { toEither :: Either ErrorAcc a }
   deriving (Show, Read, Eq, Ord)
