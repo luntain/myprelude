@@ -38,7 +38,7 @@ fromField n f =
          Right fn -> Right $ \r ->
            case fn r of
              Left err -> Left err
-             Right res -> f res
+             Right res -> tag ("parsing field " ++ n) $ f res
   where M field = stringField n
 
 fromFields :: [String] -> ([String] -> Result a) -> M a

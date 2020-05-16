@@ -56,3 +56,7 @@ approxEqual ratio x y =
   where
     avg :: Double
     avg = realToFrac (x + y) / 2
+
+infix 3 ==>
+(==>) :: Bool -> Result () -> Result ()
+cond ==> r = if cond then r else pure ()
