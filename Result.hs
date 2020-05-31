@@ -39,13 +39,14 @@ instance Monoid a => Monoid (Result a) where
   mappend (Left err1) (Left err2) = Left (mappend err1 err2)
 
 
--- I forgot about it, and it is somewhat odd, to I ever use it?
--- this is different from the regular Either instance that
--- it does not throw an exception for `fail`
 instance {-# OVERLAPPING #-} Monad (Either Err.T) where
   Left  l >>= _ = Left l
   Right r >>= k = k r
   return = Right
+
+-- this is different from the regular Either instance that
+-- it does not throw an exception for `fail`
+instance {-# OVERLAPPING #-} MonadFail (Either Err.T) where
   fail = errorResult
 
 instance {-# OVERLAPPING #-} Alternative (Either Err.T) where

@@ -19,6 +19,7 @@ instance Monad M where
   M f >>= g = M (\inp -> case f inp of
                                Left err -> Left err
                                Right res -> unm (g res) inp)
+instance MonadFail M where
   fail msg = M (const $ errorResult msg)
 
 getField :: Int -> [String] -> Result String
